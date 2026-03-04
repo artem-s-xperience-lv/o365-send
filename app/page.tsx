@@ -52,8 +52,8 @@ export default function HomePage() {
       <h1>Send Email via O365</h1>
       <form onSubmit={onSubmit}>
         <input
-          type="email"
-          placeholder="To"
+          type="text"
+          placeholder="To (comma, semicolon, or newline separated)"
           required
           value={to}
           onChange={(event) => setTo(event.target.value)}

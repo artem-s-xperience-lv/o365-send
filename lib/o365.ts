@@ -73,13 +73,11 @@ export async function sendMailWithO365(payload: MailPayload): Promise<void> {
         contentType: "Text",
         content: payload.body
       },
-      toRecipients: [
-        {
-          emailAddress: {
-            address: payload.to
-          }
+      toRecipients: payload.to.map((address) => ({
+        emailAddress: {
+          address
         }
-      ]
+      }))
     },
     saveToSentItems: true
   };

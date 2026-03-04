@@ -1,14 +1,10 @@
 # O365 Send - Next.js + API
 
-This project is a Next.js 15 app with an API route that sends email using Microsoft 365 (Graph HTTPS API).
+This app uses Next.js `15.5.10` and sends mail via Microsoft 365 Graph HTTPS API.
 
-## Requirements
+## Run Steps (CMD)
 
-- Node.js `18.18.0` or newer (required by Next.js 15.5.10)
-
-## 1) Put credentials in `.env`
-
-Edit `.env`:
+1. Add `.env` file in project root:
 
 ```env
 O365_TENANT_ID=your-tenant-id
@@ -17,58 +13,45 @@ O365_CLIENT_SECRET=your-app-client-secret
 O365_SENDER_EMAIL=sender@yourdomain.com
 ```
 
-Notes:
-- `O365_SENDER_EMAIL` must be a mailbox your app is allowed to send as.
-- Azure app registration must have Graph `Mail.Send` application permission and admin consent.
-
-## 2) Run from CMD
-
-Option A:
-
-```cmd
-run-dev.cmd
-```
-
-Option B (manual):
+2. Run install:
 
 ```cmd
 npm install
+```
+
+3. Run dev server:
+
+```cmd
+npm dev
+```
+
+If your npm version does not support `npm dev`, use:
+
+```cmd
 npm run dev
 ```
 
-Open: `http://localhost:3000`
+4. Open:
 
-## 3) Send test email from CMD
+`http://localhost:3000`
 
-With app running:
+5. Test send email from the home page form:
 
-```cmd
-send-test.cmd
-```
+- Open `http://localhost:3000`
+- Fill `To`, `Subject`, and `Message body`
+  - `To` supports multiple recipients separated by comma, semicolon, or new line
+- Click `Send Email`
+- Confirm you see `Email sent successfully`
 
-Or manually:
+Optional API test from CMD:
 
 ```cmd
 curl -X POST http://localhost:3000/api/send ^
   -H "Content-Type: application/json" ^
-  -d "{\"to\":\"recipient@example.com\",\"subject\":\"Test\",\"body\":\"Hello\"}"
+  -d "{\"to\":\"recipient@example.com\",\"subject\":\"Test from local\",\"body\":\"Hello from Next.js API\"}"
 ```
 
-## API Endpoint
+## Notes
 
-- `POST /api/send`
-- JSON body:
-
-```json
-{
-  "to": "recipient@example.com",
-  "subject": "Subject",
-  "body": "Body text"
-}
-```
-
-Success response:
-
-```json
-{ "ok": true }
-```
+- Node.js `18.18.0` or newer is required.
+- App registration must have Microsoft Graph application permission `Mail.Send` with admin consent.

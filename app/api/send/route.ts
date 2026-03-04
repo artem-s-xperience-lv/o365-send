@@ -2,10 +2,23 @@ import { NextResponse } from "next/server";
 import { sendMailWithO365 } from "@/lib/o365";
 
 type RequestBody = {
-  to?: string;
+  to?: string | string[];
   subject?: string;
   body?: string;
 };
+
+function parseRecipients(rawTo: string | string[] | undefined): string[] {
+  if (!rawTo) {
+    return [];
+  }
+
+  const values = Array.isArray(rawTo) ? rawTo : [rawTo];
+
+  return values
+    .flatMap((value) => value.split(/[,\n;]/g))
+    .map((value) => value.trim())
+    .filter(Boolean);
+}
 
 export async function POST(request: Request) {
   let parsed: RequestBody;
@@ -19,11 +32,11 @@ export async function POST(request: Request) {
     );
   }
 
-  const to = parsed.to?.trim();
+  const to = parseRecipients(parsed.to);
   const subject = parsed.subject?.trim();
   const body = parsed.body?.trim();
 
-  if (!to || !subject || !body) {
+  if (to.length === 0 || !subject || !body) {
     return NextResponse.json(
       { ok: false, error: "Fields to, subject, and body are required" },
       { status: 400 }

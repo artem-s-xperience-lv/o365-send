@@ -1,5 +1,5 @@
 export type MailPayload = {
-  to: string;
+  to: string[];
   subject: string;
   body: string;
 };
